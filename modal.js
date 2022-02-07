@@ -8,35 +8,46 @@ function editNav() {
 }
 
 const regexName = new RegExp(/^[A-z]+$/i);
-const regexEmail = new RegExp(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+const regexEmail = new RegExp(
+  /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
+);
 const regexBirthDate = new RegExp(/^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/);
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
-const formData = document.querySelectorAll(".formData");
-const closeButton = document.querySelector(".close");
+const modalBody = document.querySelector(".modal-body");
+const formData = document.querySelector("#form");
+const closeIcon = document.querySelector(".close");
 const firstName = document.querySelector("#first");
 const lastName = document.querySelector("#last");
 const email = document.querySelector("#email");
 const birthDate = document.querySelector("#birthdate");
 const tournamentQuantity = document.querySelector("#quantity");
-const tournamentLocation = document.getElementsByName("location");
+const tournamentLocation = document.querySelectorAll(".location");
+const termsOfUse = document.querySelector("#checkbox1");
 const submitButton = document.querySelector(".btn-submit");
 let firstNameError = document.querySelector("#first-error");
 let lastNameError = document.querySelector("#last-error");
 let emailError = document.querySelector("#email-error");
-
-
+let birthDateError = document.querySelector("#birthdate-error");
+let locationError = document.querySelector("#location-error");
+let tournamentquantityError = document.querySelector("#quantity-error");
+let termsOfUseError = document.querySelector("#terms-error");
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-closeButton.addEventListener('click', closeWindow);
-submitButton.addEventListener('click', checkForm);
-firstName.addEventListener('change', checkFirstName);
-lastName.addEventListener('change', checkLastName);
-email.addEventListener('change', checkEmail);
-birthDate.addEventListener('change', checkBirthDate);
+closeIcon.addEventListener("click", closeWindow);
+submitButton.addEventListener("click", checkForm);
+firstName.addEventListener("change", checkFirstName);
+lastName.addEventListener("change", checkLastName);
+email.addEventListener("change", checkEmail);
+birthDate.addEventListener("change", checkBirthDate);
+tournamentLocation.forEach((el) =>
+  el.addEventListener("change", checkLocation)
+);
+tournamentQuantity.addEventListener("change", checkTournamentQuantity);
+termsOfUse.addEventListener("change", checkTermsOfUse);
 
 // launch modal form
 function launchModal() {
@@ -47,45 +58,114 @@ function closeWindow() {
   modalbg.style.display = "none";
 }
 
-function checkFirstName(e) {
+function checkFirstName() {
   if (regexName.test(firstName.value)) {
-    console.log("it's ok !");
     firstNameError.innerHTML = "";
+    return true;
   } else {
-    firstNameError.innerHTML = "it's an error !";
+    firstNameError.innerHTML = "Veuillez entrer un prénom correct.";
+    return false;
   }
 }
 
-function checkLastName(e) {
-  if (regexEmail.test(email.value)) {
-    console.log("it's ok !");
+function checkLastName() {
+  if (regexName.test(lastName.value)) {
     lastNameError.innerHTML = "";
+    return true;
   } else {
-    lastNameError.innerHTML = "it's an error !";
+    lastNameError.innerHTML = "Veuillez entrer un nom correct.";
+    return false;
   }
 }
 
-function checkEmail(e) {
+function checkEmail() {
   if (regexEmail.test(email.value)) {
-    console.log("it's ok !");
     emailError.innerHTML = "";
+    return true;
   } else {
-    emailError.innerHTML = "it's an error !";
+    emailError.innerHTML = "Veuillez entrer une adresse mail correct";
+    return false;
   }
 }
 
-function checkBirthDate(e) {
-  if (regexBirthDate.test(birthDate.value)) {
-    console.log("it's ok !");
-    emailError.innerHTML = "";
+function checkBirthDate() {
+  if (birthDate.value.length == 10) {
+    let date = new Date(birthDate.value);
+    let year = date.getFullYear();
+    if (year < 2010 && year > 1900) {
+      birthDateError.innerHTML = "";
+      return true;
+    } else {
+      birthDateError.innerHTML =
+        "Veuillez entrer une date de naissance correcte.";
+      return false;
+    }
   } else {
-    emailError.innerHTML = "it's an error !";
+    birthDateError.innerHTML = "Veuillez entrer votre date de naissance.";
+    return false;
   }
 }
 
-function checkForm(){
-  checkFirstName();
+function checkTournamentQuantity() {
+  if (tournamentQuantity.value >= 0 && tournamentQuantity.value <= 99) {
+    tournamentquantityError.innerHTML = "";
+    return true;
+  } else {
+    tournamentquantityError.innerHTML =
+      "Veuillez saisir un nombre de tournois correct.";
+    return false;
+  }
 }
 
+function checkLocation() {
+  let ifValide = false;
+  for (let i = 0; i < tournamentLocation.length; i++) {
+    const element = tournamentLocation[i];
+    if (element.checked == true) {
+      ifValide = true;
+    }
+  }
+  if (ifValide == true) {
+    locationError.innerHTML = "";
+    return true;
+  } else {
+    locationError.innerHTML = "Veuillez selectionner une option.";
+    return false;
+  }
+}
 
+function checkTermsOfUse() {
+  if (termsOfUse.checked == true) {
+    termsOfUseError.innerHTML = "";
+    return true;
+  } else {
+    termsOfUseError.innerHTML = "Veuillez accepté les conditions d'utilisation";
+    return false;
+  }
+}
 
+function checkForm() {
+  let checkForm = [
+    checkFirstName(),
+    checkLastName(),
+    checkLocation(),
+    checkEmail(),
+    checkBirthDate(),
+    checkLocation(),
+    checkTournamentQuantity(),
+    checkTermsOfUse(),
+  ];
+  if (checkForm.every(Boolean)) {
+    form.style.display = "none";
+    let validationMessage = document.createElement("p");
+    validationMessage.innerHTML = "Merci pour votre inscription";
+    validationMessage.style.textAlign = "center";
+    let closeButton = document.createElement("button");
+    closeButton.classList.add("modal-btn");
+    closeButton.classList.add("close-btn");
+    closeButton.textContent = "fermer";
+    modalBody.appendChild(validationMessage);
+    modalBody.appendChild(closeButton);
+    closeButton.addEventListener("click", closeWindow);
+  }
+}

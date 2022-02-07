@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="utf-8" />
     <title>Reservation</title>
@@ -58,6 +58,7 @@
           <div class="modal-body">
             <form
               name="reserve"
+              id="form"
               action="index.html"
               method="get"
               onsubmit="return validate();"
@@ -105,17 +106,19 @@
                   id="birthdate"
                   name="birthdate"
                 /><br>
+                <p class="error" id="birthdate-error"></p>
               </div>
               <div
                 class="formData">
                 <label>À combien de tournois GameOn avez-vous déjà participé ?</label><br>
                 <input type="number" class="text-control" id="quantity" name="quantity" min="0" max="99">
+                <p class="error" id="quantity-error"></p>
               </div>
               <p class="text-label">A quel tournoi souhaitez-vous participer cette année ?</p>
               <div
                 class="formData">
                 <input
-                  class="checkbox-input"
+                  class="location checkbox-input"
                   type="radio"
                   id="location1"
                   name="location"
@@ -126,7 +129,7 @@
                   New York</label
                 >
                 <input
-                  class="checkbox-input"
+                class="location checkbox-input"
                   type="radio"
                   id="location2"
                   name="location"
@@ -137,7 +140,7 @@
                   San Francisco</label
                 >
                 <input
-                  class="checkbox-input"
+                class="location checkbox-input"
                   type="radio"
                   id="location3"
                   name="location"
@@ -148,7 +151,7 @@
                   Seattle</label
                 >
                 <input
-                  class="checkbox-input"
+                class="location checkbox-input"
                   type="radio"
                   id="location4"
                   name="location"
@@ -159,7 +162,7 @@
                   Chicago</label
                 >
                 <input
-                  class="checkbox-input"
+                class="location checkbox-input"
                   type="radio"
                   id="location5"
                   name="location"
@@ -170,7 +173,7 @@
                   Boston</label
                 >
                 <input
-                  class="checkbox-input"
+                class="location checkbox-input"
                   type="radio"
                   id="location6"
                   name="location"
@@ -181,6 +184,7 @@
                   Portland</label
                 >
               </div>
+              <p class="error" id="location-error"></p>
 
               <div
                 class="formData">
@@ -189,10 +193,12 @@
                   type="checkbox"
                   id="checkbox1"
                   checked
+                  required
                 />
                 <label class="checkbox2-label" for="checkbox1" required>
                   <span class="checkbox-icon"></span>
                   J'ai lu et accepté les conditions d'utilisation.
+                  <p class="error" id="terms-error"></p>
                 </label>
                 <br>
                 <input class="checkbox-input" type="checkbox" id="checkbox2" />
