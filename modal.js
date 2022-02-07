@@ -7,6 +7,9 @@ function editNav() {
   }
 }
 
+const noBorder = "none";
+const borderError = "3px solid red";
+
 const regexName = new RegExp(/^[A-z]+$/i);
 const regexEmail = new RegExp(
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -60,9 +63,11 @@ function closeWindow() {
 
 function checkFirstName() {
   if (regexName.test(firstName.value)) {
+    firstName.style.border = noBorder;
     firstNameError.innerHTML = "";
     return true;
   } else {
+    firstName.style.border = borderError;
     firstNameError.innerHTML = "Veuillez entrer un prénom correct.";
     return false;
   }
@@ -70,9 +75,11 @@ function checkFirstName() {
 
 function checkLastName() {
   if (regexName.test(lastName.value)) {
+    lastName.style.border = noBorder;
     lastNameError.innerHTML = "";
     return true;
   } else {
+    lastName.style.border = borderError;
     lastNameError.innerHTML = "Veuillez entrer un nom correct.";
     return false;
   }
@@ -80,9 +87,11 @@ function checkLastName() {
 
 function checkEmail() {
   if (regexEmail.test(email.value)) {
+    email.style.border = noBorder;
     emailError.innerHTML = "";
     return true;
   } else {
+    email.style.border = borderError;
     emailError.innerHTML = "Veuillez entrer une adresse mail correct";
     return false;
   }
@@ -93,9 +102,11 @@ function checkBirthDate() {
     let date = new Date(birthDate.value);
     let year = date.getFullYear();
     if (year < 2010 && year > 1900) {
+      birthDate.style.border = noBorder;
       birthDateError.innerHTML = "";
       return true;
     } else {
+      birthDate.style.border = borderError;
       birthDateError.innerHTML =
         "Veuillez entrer une date de naissance correcte.";
       return false;
@@ -108,9 +119,11 @@ function checkBirthDate() {
 
 function checkTournamentQuantity() {
   if (tournamentQuantity.value >= 0 && tournamentQuantity.value <= 99) {
+    tournamentQuantity.style.border = noBorder;
     tournamentquantityError.innerHTML = "";
     return true;
   } else {
+    tournamentQuantity.style.border = borderError;
     tournamentquantityError.innerHTML =
       "Veuillez saisir un nombre de tournois correct.";
     return false;
